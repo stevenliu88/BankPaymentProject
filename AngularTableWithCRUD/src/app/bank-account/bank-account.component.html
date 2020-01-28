@@ -22,7 +22,9 @@
         <input class="form-control" formControlName="accountHolder">
       </div>
       <div class="td">
-        <input class="form-control" formControlName="bankID">
+        <select class="form-control" formControlName="bankID">
+          <option *ngFor="let item of bankList" value={{item.bankID}}>{{item.bankName}}</option>
+        </select>
       </div>
       <div class="td">
         <input class="form-control" formControlName="IFSC">
