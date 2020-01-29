@@ -33,11 +33,10 @@ export class BankAccountComponent implements OnInit {
     this.bankService.getBankList().subscribe( res => this.bankList = res as []);
   }
 
-  getBankAccountDetail(){
+  getBankAccountDetail() {
     this.bankAccountService.getBankAccountList().subscribe(res => {
       if (res.length > 0 ) {
         (res as Array<BankAccount>).forEach((bankAccount: BankAccount) => {
-          console.log('bankAccount', bankAccount);
           this.bankAccountForms.push(this.fb.group({
             bankAccountId : [bankAccount.bankAccountID],
             accountNumber: [bankAccount.accountNumber, Validators.required],
@@ -53,11 +52,30 @@ export class BankAccountComponent implements OnInit {
   }
   recordSubmit(fg: FormGroup) {
     fg.value.bankID = parseInt(fg.value.bankID);
-    this.bankAccountService.postBankAccount(fg.value).subscribe(
-      (res: any) => {
-        fg.patchValue({bankAccountId: res.bankAccountId});
-      },
-      error => console.log(error)
+    if (fg.value.bankAccountId === 0) {
+      this.bankAccountService.postBankAccount(fg.value).subscribe(
+        (res: any) => {
+          console.log(res);
+          fg.patchValue({bankAccountId: res.bankAccountId});
+        },
+        error => console.log(error)
+        );
+    } else {
+      this.bankAccountService.updateBankAccount(fg.value).subscribe(
+        res => {
+          console.log('update', res);
+        }
       );
+    }
+  }
+
+  onDelete(fg: FormGroup, i) {
+    if (fg.value.bankAccountId === 0 ) {
+      this.bankAccountForms.removeAt(i);
+    } else if (confirm('Are you sure to delete this record? ')) {
+      this.bankAccountService.removeBankAccount(fg.value.bankAccountId).subscribe(res => {
+        this.bankAccountForms.removeAt(i);
+      });
+    }
   }
 }

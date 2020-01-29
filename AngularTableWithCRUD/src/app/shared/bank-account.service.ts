@@ -13,7 +13,13 @@ export class BankAccountService {
   postBankAccount(formData) {
     return this.http.post(environment.apiBaseURI + '/BankAccount', formData);
   }
-  getBankAccountList(): Observable<Array<BankAccount>>{
+  getBankAccountList(): Observable<Array<BankAccount>> {
     return this.http.get<Array<BankAccount>>(environment.apiBaseURI + '/BankAccount');
+  }
+  updateBankAccount(formData) {
+    return this.http.put(environment.apiBaseURI + `/BankAccount/${formData.bankAccountId}`, formData);
+  }
+  removeBankAccount(bankAccountId: number) {
+    return this.http.delete(environment.apiBaseURI + `/BankAccount/${bankAccountId}`);
   }
 }
