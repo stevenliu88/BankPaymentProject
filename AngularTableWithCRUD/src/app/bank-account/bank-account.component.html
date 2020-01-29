@@ -11,10 +11,15 @@
       <div class="td">Account Holder</div>
       <div class="td">Bank</div>
       <div class="td">IFSC</div>
+      <div class="td">
+        <button class="btn btn-outline-success" (click)= "addBankAccountForm()">
+            <mat-icon>add</mat-icon> New Account
+        </button>
+      </div>
     </div>
   </div>
   <div class="tbody">
-    <form class="tr" [formGroup] = "fg" *ngFor="let fg of bankAccountForms.controls">
+    <form class="tr" [formGroup] = "fg" *ngFor="let fg of bankAccountForms.controls" (submit)="recordSubmit(fg)">
       <div class="td">
         <input class="form-control" formControlName="accountNumber">
       </div>
@@ -23,11 +28,15 @@
       </div>
       <div class="td">
         <select class="form-control" formControlName="bankID">
+          <option value= "0"> Select </option>
           <option *ngFor="let item of bankList" value={{item.bankID}}>{{item.bankName}}</option>
         </select>
       </div>
       <div class="td">
         <input class="form-control" formControlName="IFSC">
+      </div>
+      <div class="td">
+        <button type="submit" class="btn btn-success" [disabled] ="fg.invalid"><mat-icon>save</mat-icon>Submit</button>
       </div>
     </form>
   </div>
